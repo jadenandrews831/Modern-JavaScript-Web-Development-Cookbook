@@ -17,3 +17,18 @@ var obj =
 };
 
 [1,2,3].forEach(foo, obj); //<- Awesome! I didn't know that this existed!
+
+function func()
+{
+  var a = 0;
+
+  function print()
+  {
+    console.log("func->print");
+    console.log( this.a );
+  }
+
+  print();
+}
+
+func();
