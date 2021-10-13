@@ -9,10 +9,10 @@ function foo(something)
 
 var obj1 = {};
 
-var bar = foo.bind( obj1 );
+var bar = foo.bind( obj1 );   //<-- explicit binding (hard binding)
 bar( 2 );
 console.log(obj1.a); // 2
 
-var baz = new bar( 3 ); // <-- SEE HERE new binding takes precedence over explicit binding
+var baz = new bar( 3 ); // <-- SEE HERE new binding takes precedence over explicit binding...
 console.log( obj1.a ); // 2
 console.log( baz.a );  // 3

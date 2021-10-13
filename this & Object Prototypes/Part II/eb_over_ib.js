@@ -23,8 +23,8 @@ var obj2 =
 
 console.log("eb_over_ib.js");
 
-obj1.foo();                // <-- implicit binding call
+obj1.foo();               // <-- implicit binding call
 obj2.foo();               // <-- implicit binding call
 
-obj1.foo.call(obj2); // <- SEE HERE: explicit binding takes precedence...(should be '3')
-obj2.foo.call(obj1);
+obj1.foo.call(obj2);      // <- SEE HERE: explicit binding takes precedence...(should be '3')
+obj2.foo.call(obj1);      // <- SEE HERE: explicit binding takes precedence...(should be '2')
