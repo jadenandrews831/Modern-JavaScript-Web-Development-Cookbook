@@ -1,5 +1,4 @@
 **SYNTAX
-
 Objects come in two forms: the declarative (literal) form and the constructed form:
 
   The literal syntzx for an object looks like this:
@@ -16,16 +15,17 @@ Objects come in two forms: the declarative (literal) form and the constructed fo
     myObj.key = value;
 
 The constructed form and the literal form result in exactly the same sort of object. The only difference really
-is that you can add one or more key/value pairs to the literal declaration, whereas with constructed-form objects, 
-you must add the properties one by one.
+
+is that you can add one or more key/value pairs to the literal declaration, whereas with constructed-form objects,  you must add the properties one by one.
 
 **NOTE**
-  It is extremely uncommon to use the 'constructed form' for creating objects as just shown. You would pretty much 
-  always want to use the literal syntax form. The same will be true of most of the built-in objects (explained later).
+  It 
+  is extremely uncommon to use the 'constructed form' for creating objects as just shown. You would pretty much 
+ always want to use the literal syntax form. The same will be true of most of the built-in objects (explained later).
 
 **TYPE
-Objects are the general building block upon which much of JS is built. They are one of the six primary types ( called
-'language types' in the specification ) in JS:
+Objects are the general building block upon which much of JS 
+is built. They are one of the six primary types ( called 'language types' in the specification ) in JS:
   
   * string
   * number
@@ -34,26 +34,28 @@ Objects are the general building block upon which much of JS is built. They are 
   * null
   * undefined
 
-The simple primitives are string, number, boolean. null and undefined. They are not themselves objects. 'null' is 
-sometimes referred to as an object type, but this misconception stems from a bug in the language that causes 
-typeof 'null' to return the string "object" incorrectly ( and confusingly ). In fact, 'null' is its own primitive
-type.
+The simple primitives are string, number, boolean. null and undefined. They are not themselves objects. 'null' 
+is  sometimes referred to as an object type, but this misconception stems from a bug in the language that causes 
+typeof 'null' to return the string "object" incorrectly ( and confusingly ). In fact, 'null' 
+is its own primitive type.
 
-It is a common misstatement that "everything in JavaScript is an object". 
-
+It 
+is a common misstatement that "everything in JavaScript is an object".  
 There are a few special object subtypes, which we can refer to as complex primitives.
 
-  * 'function' is a subtype of object (technically, a "callable object"). Functions in JS are said to be "first
-    class" in that they are basically just normal objects ( with callable behavior semantics bolted on ), and so
+  * 'function' 
+  is a subtype of object (technically, a "callable object"). Functions in JS are said to be "first
+   class" in that they are basically just normal objects ( with callable behavior semantics bolted on ), and so
     they can be handled like any other plain object.
 
-  * Arrays are also a form of objects, with extra behavior. The organization of contents in arrays is slightly
-  more structured than for general objects.
+  * Arrays are also a form of objects, with extra behavior. The organization of contents in arrays 
+  is slightly
+ more structured than for general objects.
 
 ***Built-in Objects
 There are several other object subtypes, usually referred to as built-in objects. For some of them, their names seem 
-to imply they are directly related to their simple primitive counterparts, but in fact, their relationship is more
-complicated, which we'll explore shortly.
+to imply they are directly related to their simple primitive counterparts, but in fact, their relationship 
+is more complicated, which we'll explore shortly.
 
   * String 
   * Number 
@@ -67,5 +69,46 @@ complicated, which we'll explore shortly.
 
 These built-ins have the appearance of being actual types, even classes, if you rely on the similarity to other languages
 such as Java's 'String' class. But in JS, these are actually just built-in functions. Each of these built-in functions 
-can be used as a constructor (that is, a function call with the new operator), with the result being a newly constructed 
-object of the subtype in question.
+can be used as a constructor (that 
+is, a function call with the new operator), with the result being a newly constructed  object of the subtype in question. (constructed.js)
+
+The primitive value "I am a string" 
+is not an object, it  is a primitve literal and immutable value. To perform operations  on it, such as checking its length, accessing its individual character contents, etc., a 'String' object 
+is required.  Luckily, JS automatically coerces a string primitive to a 'String' object when necessary, which means you almost never
+need to explicitly create the 'OBject' form. It 
+is strongly preferred by the majority of the JS community to use the literal form for a value, where possible, rather than the constructed object form. 
+
+Consider (lit_over_con.js). In both cases, we call a property or method on a string primitive, and the engine automatically
+coerces it to a String object, so that the property/method access works.
+
+'null' and 'undefined' have no object wrapper form, only their primitive values. By contrast, Date values can obly be created 
+with their constructed object form, as they have no literal form counterpart.
+
+Objects, Arrays, Functions, and RegExps are all objects regardless of whether the literal or constructed form is used. 
+The constructed form does offer, in some cases, more options in creation than the literal form couterpart. Since objects 
+are created either way, the simpler literal form is almost universally preferred. Only use the constructed form if you 
+need the extra options.
+
+Error objects are rarely created explicitly in code, but usually created automatically when exceptions are thrown. They can
+be created with the constructed form 'new Error(..)', but it's often unnecessary.
+
+**Contents
+The contents of an object consist of values (any type) stored at specifically names locations, which we call properties. It 
+is important to note that while we say "contents", which implies that these values are actually stored inside the object, 
+that's merely an appearance. The engine stores values in implementation-dependent ways, and may very well not store them 
+'in' some object container. What 'is' stored in the container are these property names, which act as pointers (technically, 
+references) to where the values are stored.
+
+Consider (location.js). To access the value at the location 'a' in 'myObject', we need to use either the '.' operator or the
+'[]' operator. The '.a' syntax is usually referred to as "property access", whereas the '["a"]' syntax is usually referred to
+as "key access." In reality, they both access the same location and will pull out the same value, 2, so the terms can be 
+used interchangeably. We will use the most common term, "property access," from here.
+
+The '.' operator requires an 'Identifier'-compatible property name after it, whereas the '[".."]' syntax can take basically 
+any UTF-8/Unicode-compatible string as the name for the property. To reference a property of the name "Super-Fun!", for 
+instance, you would have to use the '["Super-Fun!"]' access syntax as 'Super-Fun!' is not a valid 'Identifier' property name.
+
+Property names are always strings. If you use any other value besides a 'string' primitve, as the property, it will first be
+converted to a 'string'.
+
+
