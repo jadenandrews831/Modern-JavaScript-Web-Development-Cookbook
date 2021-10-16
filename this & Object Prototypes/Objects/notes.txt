@@ -16,7 +16,8 @@ Objects come in two forms: the declarative (literal) form and the constructed fo
 
 The constructed form and the literal form result in exactly the same sort of object. The only difference really
 
-is that you can add one or more key/value pairs to the literal declaration, whereas with constructed-form objects,  you must add the properties one by one.
+is that you can add one or more key/value pairs to the literal declaration, whereas with constructed-form objects, you 
+must add the properties one by one.
 
 **NOTE**
   It 
@@ -70,19 +71,21 @@ is more complicated, which we'll explore shortly.
 These built-ins have the appearance of being actual types, even classes, if you rely on the similarity to other languages
 such as Java's 'String' class. But in JS, these are actually just built-in functions. Each of these built-in functions 
 can be used as a constructor (that 
-is, a function call with the new operator), with the result being a newly constructed  object of the subtype in question. (constructed.js)
+is, a function call with the new operator), with the result being a newly constructed  object of the subtype in question. 
+(constructed.js)
 
 The primitive value "I am a string" 
-is not an object, it  is a primitve literal and immutable value. To perform operations  on it, such as checking its length, accessing its individual character contents, etc., a 'String' object 
-is required.  Luckily, JS automatically coerces a string primitive to a 'String' object when necessary, which means you almost never
-need to explicitly create the 'OBject' form. It 
-is strongly preferred by the majority of the JS community to use the literal form for a value, where possible, rather than the constructed object form. 
+is not an object, it  is a primitve literal and immutable value. To perform operations  on it, such as checking its length, 
+accessing its individual character contents, etc., a 'String' object  is required.  Luckily, JS automatically coerces a 
+string primitive to a 'String' object when necessary, which means you almost never need to explicitly create the 'OBject' 
+form. It is strongly preferred by the majority of the JS community to use the literal form for a value, where possible, 
+rather than the constructed object form. 
 
 Consider (lit_over_con.js). In both cases, we call a property or method on a string primitive, and the engine automatically
 coerces it to a String object, so that the property/method access works.
 
-'null' and 'undefined' have no object wrapper form, only their primitive values. By contrast, Date values can obly be created 
-with their constructed object form, as they have no literal form counterpart.
+'null' and 'undefined' have no object wrapper form, only their primitive values. By contrast, Date values can obly be 
+created with their constructed object form, as they have no literal form counterpart.
 
 Objects, Arrays, Functions, and RegExps are all objects regardless of whether the literal or constructed form is used. 
 The constructed form does offer, in some cases, more options in creation than the literal form couterpart. Since objects 
@@ -111,4 +114,116 @@ instance, you would have to use the '["Super-Fun!"]' access syntax as 'Super-Fun
 Property names are always strings. If you use any other value besides a 'string' primitve, as the property, it will first be
 converted to a 'string'.
 
+***Computed Property Names
+The 'myObject[..]' property access syntaz is useful if you need to use a computed expression value as the key name, like 
+'myObject[prefix + name]'.
 
+ES6 adds 'computed property names', where you can specify an expression, surrounded by a [] pair, in the key-name position
+of an object-literal declaration: (cp_names.js). They will probably be useful for ES6 'Symbols;, a new primitive data type 
+that has an opaque unguessable value. (Explored further later).
+
+***Property Versus Method
+Functions never 'belong' to objects, so 'method access' doesn't exist in JavaScript. Only 'property access'. 
+
+For instance: (not_method.js)
+'someFoo' and 'myObject.someFoo' are just two separate references to the same function, and neither implies anything about 
+the fuction being special or "owned" by another object. If 'foo()' was defined to have 'this' reference inside it, that 
+'myObject.someFoo' implicit binding would be the only observable difference between the two references. It doesn't make 
+sense to call either reference a "method".
+
+***Arrays
+You already know what an array is for the most part. But here are some important things to remember about JavaScript arrays.
+
+JavaScript arrays are still objects, so you can add properties to them i.e:
+
+    myObject = ["foo"]
+    myObject.baz = "baz"
+    myObject.length         // 1
+
+Notice, even if you add a property to an array, you will not change the length of the array.
+
+Be careful: if you try to add a property to an array, but the property name looks liek a number, it will end up instead as a
+numeric index (thus modifying the array contents):
+
+***Duplicating Objects
+Consider (copy_obj.js).
+
+A 'shallow copy' of the object would end with 'a' on the new object as a copy of the value '2', but the 'b', 'c', and 'd' 
+properties as just references to the same places as the references in the original object.
+
+A 'deep copy' would duplicate not only 'myObject', but 'anotherObect' and 'anotherArray'. But then we have the issue that
+'anotherArray' has references to 'anotherObject' and 'myObject' in it, so those should also be duplicated rather than
+reference-preserved. This creates an infinite circular duplication problem because of circular reference.
+
+A 'shallow copy' is fairly understandable and has far fewer issues, so ES6 has now defined 'Object.assign(..)' for this 
+task. 'Object.assign(..)' taks a target object as its first parameter, and one or more source objects as its subsequent 
+parameters, it iterates over all the enumerable, owned keys (immediately present) on the source object(s) and copies them
+(via = assignment only) to the target. It also returns the target object (copy_obj.js:.assign()).
+
+***Property Descriptors
+Prior to ES5, the JavaScript language gave no direct way for your code to inspect or draw any disctinction between the 
+characteristics of properties, such as whether the property was read-only or not. As of ES5, all properties are described
+in terms of a 'property descriptor'. 
+
+Consider (descriptor.js). The property descriptor ( called a 'data descriptor' since it's only for holding a data value )
+for our normal object property 'a' is much more than just its 'value' of '2'. It includes three other characteristics:
+'writable','enumerable', and 'configurable'. We can use 'Object.defineProperty(..)' to add a new property, or modify an 
+existing one, if it is configurable, with the desired characteristics. 
+
+(defineProperty.js). Using defineProperty(..), we added the plain, normal 'a' property to 'myObject' in a manually explicit 
+way. However, you generally wouldn't use this manual approach unless you wanted to modify one of the descriptor 
+characteristics from its normal behavior.
+
+***Writable 
+The ability for you to change the value of a property is controlled by 'writable'
+
+Consider (writable.js). The modification 'myObjecta = 3' silently failed. If tried in 'strict mode', we would have received 
+an error. 'writable:false' means a value cannot be changed, which is somewhat equivalent to if you defined a no-op setter.
+
+***Configurable
+As long as a property is currently configurable, we can modify its descriptor definition, using the same 'defineProperty(..)'
+utility: (configurable.js). Regardless of 'strict mode', if you attempt to change the descriptor definition of a 
+nonconfigurable property it will result in a 'TypeError'. Changing 'configurable' to 'false' is a one-way action, and cannot 
+be undone.
+
+'configurable:false' also prevents the ability to use the 'delete' operator to remove an existing property: 
+
+(configurable_2.js). The last 'delete' call failed silently because we made the 'a' property nonconfigurable. 'delete'
+is only used to remove object properties directly from the object in question. If an object property is the last remaining
+reference to some object/function, and you 'delete' it, that removes the reference and now that unreferenced object/function
+can be garbage-collected. 'delete' is just an object property removal operation.
+
+***Enumerable 
+Set 'enumerable' to 'false' to keep the property from showing up in enumerating structures such as the 'for..in' loop, even 
+though said property is still completely accessible. All normal user-defined properties are defaulted to 'enumerable'.
+
+***Immutablility
+ES5 handles immutablility, or the inablility to make changes to properties objects, in a variety of ways. It is important to
+note that 'all' of these approaches create shallow immutablility. That is, they affect only the object and its direct property 
+characteristics. If an object has a reference to another object, the contents of that object are not affected and remain
+mutable.
+
+  myImmutableObject.foo;      // [1, 2, 3]
+  myImmutableObject.foo.push(4);
+  myImmutableObject.foo();    // [1, 2, 3, 4]
+
+We assume in this snipped that 'myImmutableObject' is already created and protected as immutable. But, to also protect the 
+contents of 'myImmutableObject.foo', you would also need to make 'foo' immutable, using one of the following functionalities:
+
+  Object constant
+
+  By combining 'writable:false' and 'configurable:false', you can essentially create a 'constant' as an object property:
+
+    var myObject = {};
+
+    Object.defineProperty( myObject, "FAVORITE_NUMBER",
+    {
+      value: 42,
+      writable: false,
+      configurable: false
+    })
+
+  Prevent extensions
+
+  If you want to prevent an object from having new properties added to it, but otherwise leave the rest of the object's 
+  properties alone, call 'Object.preventExtensions(..)':

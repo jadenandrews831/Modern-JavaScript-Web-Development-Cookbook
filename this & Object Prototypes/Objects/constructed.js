@@ -1,3 +1,5 @@
+console.log("constructed.js");
+
 var strPrimitive = "I am a string";
 console.log(typeof strPrimitive);                            //  string
 console.log(strPrimitive instanceof String);                 //  false
