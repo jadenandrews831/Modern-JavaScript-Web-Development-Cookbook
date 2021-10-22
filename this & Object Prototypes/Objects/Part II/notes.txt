@@ -1,0 +1,51 @@
+*** Enumeration
+
+Examine (enumeration.js).
+
+Enumerable basically means that a property will be included if the object's properties are iterated through.
+
+**NOTE**
+'for..in' loops applied to arrays can give somewhat unexpected results, in the enumeration of an array will include not 
+only all the numeric indices, but also any enumerable properties. It's a good idea to use 'for..in' loops only on objects, 
+and traditional 'for' loops with numeric index iteration for arrays.
+
+'propertyIsEnumerable(..)' tests whether the given property name exists 'directly' on the object and is also 
+'enumerable:true'. 'Object.keys(..)' returns an array of all enumerable properites, whereas 
+'Object.getOwnPropertyNames(..)' returns an array of all properties, enumerable or not. Whereas 'in' versus
+'hasOwnProperty(..)' differ in whether they consult the '[[Prototype]]' chain or not, 'Object.keys(..)' and 
+'getOwnPropertyNames(..)' both inspect only the direct object specified.
+
+There's no built-in way to get a list of all properties that is equivalent to what the 'in' operator test would consult
+(traversing all properties on the entire '[[Prototype]]' chain, as explained in Chapter 5). You could approximate such a 
+utility by recursively traversing the '[[Prototype]]' chain of an object, and for each level, capturing the list from 
+'Object.keys(..)'--only enumerable properties.
+
+**Iteration
+
+The 'for..in' loop iterates over the list of enumeratble properties on an object (including its '[[Prototype]]' chain). 
+ES5 added several iteration helpers for arrays, including 'forEach(..)', 'every(..)', and 'some(..)' Each of these helpers 
+accepts a function callback to apply to each element in the array, differing only in how they respectively respond to a 
+return value from the callback.
+
+'forEach(..)' will iterate over all values in the array, and it ignores any callback return values. 'every(..)' keeps going 
+until the end or the callback returns a 'false/falsy' value. 'some(..)' keeps going until the end or the callback returns a 
+'true/truthy' value.
+
+These special return values inside 'every(..)' and 'some(..)' act somewhat like a 'break' statement inside a normal 'for' 
+loop, in that they stop the iteration early before it reaches the end. 
+
+**NOTE**
+
+As contrasted with iterating over an array's indices in a numerically ordered way ('for' loop or other iterators), the 
+order of iteration over an object's properties is not guaranteed and may vary between different JS engines. Do not rely on 
+any observed ordering for anyting that requires consistency among evnironments, as any observed agreement is unreliable.
+
+ES6 adds a 'for..of' lop syntax for iterating over arrays (and objects, if the object defines its own custom iterator):
+(forIn.js)
+
+'for..in' asks for an iterator object (from a default internal function known as '@@iterator' in the spec) of the thing to 
+be iterated, and the loop then iterates over the successive return values from calling that iterator object's 'next()' 
+method, once for each loop iteration.
+
+Arrays have a built-in '@@iterator', so 'for..of' works easily on them. (See manualIteration.js)
+
