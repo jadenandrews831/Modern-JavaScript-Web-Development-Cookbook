@@ -49,3 +49,20 @@ method, once for each loop iteration.
 
 Arrays have a built-in '@@iterator', so 'for..of' works easily on them. (See manualIteration.js)
 
+**NOTE**
+We get at the '@@iterator' internal property of an object using an 'ES6 Symbol': 'Symbol.iterator'. Always reference such
+special properties by 'Symbo' name reference instead of by the special value it may hold. Also, despite the name's 
+implications, '@@iterator' is not the iterator object itself, but a function that returns the iterator object.
+
+The return value from an iterator's 'next()' call is an object of the form { value: .. , done: .. }, where 'value' is the 
+current iteration value, and 'done' is a 'boolean' that indicated whether there's more to iterate. Notice the value '3' 
+was returned with a 'done:false'. You have to call the 'next()' a fourth time (which for the 'for..of' loop automatically
+does) to get 'done:true' and know you're truly done iterating. 
+
+While arrays do automatically iterate in 'for..of' loops, regular objects do not have a built-in '@@iterator'. It is,
+however, possible to define your own default '@@iterator' for any object that you care to iterate over: 
+(objectIteration.js)
+
+Each time the 'for..of' loop calls 'next()' on 'myObject''s iterator object, the internal pointer will advance and
+return back the next value form the object's properties list. The iteration above is a 'value-by-value' iteration.
+
