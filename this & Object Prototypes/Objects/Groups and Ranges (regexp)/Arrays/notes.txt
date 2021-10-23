@@ -1,0 +1,20 @@
+Array
+
+The JavaScript 'Array' class is a global object that is used in the construction of arrays; which are high-level, 
+list-like objects.
+
+Description
+
+Arrays are list-like objects whose prototype has methods to perform traversal and mutation operations. Neither the length
+of a JavaScript array not the types of its elements are fixed. Sinec an array's length can change at any time, and data 
+can be stored at non-contiguous locations in the array, JavaScript arrays are not guaranteed to be dense; this depends on
+how the programmer chooses to use them. In general, these are convenient characteristics; but if these features are not 
+desireable for your particular use, you might consider using typed arrays.
+
+Arrays cannot use strings as element indexes (as in an associative array/dictionary) but must use integers. Setting or
+accessing via non-integers using bracket notation (or dot notation) will not set or retrieve an element from an array list
+itself, but will set or access a variable associated with that array's object property collection. The array's object 
+properties and list of array elements are separate, and the arary's traversal and mutation operations canno be applied to
+these named properties. 
+
+Consider (commonOperations.js).
