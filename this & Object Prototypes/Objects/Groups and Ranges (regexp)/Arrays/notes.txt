@@ -1,10 +1,8 @@
-Array
-
+--Array
 The JavaScript 'Array' class is a global object that is used in the construction of arrays; which are high-level, 
 list-like objects.
 
-Description
-
+**Description
 Arrays are list-like objects whose prototype has methods to perform traversal and mutation operations. Neither the length
 of a JavaScript array not the types of its elements are fixed. Sinec an array's length can change at any time, and data 
 can be stored at non-contiguous locations in the array, JavaScript arrays are not guaranteed to be dense; this depends on
@@ -14,7 +12,97 @@ desireable for your particular use, you might consider using typed arrays.
 Arrays cannot use strings as element indexes (as in an associative array/dictionary) but must use integers. Setting or
 accessing via non-integers using bracket notation (or dot notation) will not set or retrieve an element from an array list
 itself, but will set or access a variable associated with that array's object property collection. The array's object 
-properties and list of array elements are separate, and the arary's traversal and mutation operations canno be applied to
+properties and list of array elements are separate, and the arary's traversal and mutation operations cannot be applied to
 these named properties. 
 
 Consider (commonOperations.js).
+
+##Accessing array elements
+JavaScript arrays are zero-indexed. The first element of an array is at index 0, and the last element is at the index value
+equal to the value of the array's length property minus 1.
+
+Using an invalid index number returns undefined.
+consider (accessingarrays.js)
+
+Array elements are object properties in the same way that 'toString' is a property (to be specific, however, 'toString()' is 
+a method). Nevertheless, trying to access an element of an array as follows throws a syntax error because the property name is
+not valid:
+
+    console.log(arr.0);     //  a syntax error
+
+There is nothing special about JavaScript arrays and the properties that cause this. JavaScript properties that begin with a 
+digit cannot be referenced with dot notation and must be accessed using bracket notation. 
+
+    let years = [1950, 1960, ...];
+    console.log(years.0)            //  a syntax error
+    console.log(years[0])           //  works properly
+
+    renderer.3d.setTexture(model, 'character.png');     //  a syntax error
+    renderer['3d'].setTexture(model, 'character.png');  //  works properly
+
+It is still possible to quote the array indexes, although it is not necessary. The '0' in 'years[0]' is coerced into a string
+by the JavaScript engine through an implicit 'toString' conversion. As a result, '2' and '02' would refer to two different
+slots on the years object.
+
+@@Relationship between length and numerical properties
+A JavaScript array's length property and numerical properties are connected. Several of the built-in array methods take into 
+account the value of an array's length property when they're called. Other methods also result in updates to an array's
+'length' property. (Consider length.js)
+
+*Decreasing the 'length' property deletes elements (Consider length.js).
+
+&&Creating an array using the result of a match
+The result of a match between a 'RegExp' and a string can create a JavaScript array. This array has properties and elements
+which provide information about the match. Such an array is returned by 'RegExp.exec()', 'String.match()', 
+'String.replace()'.
+Consider (propertiesandelements.js).
+
+The properties and elements returned from this match are as follows:
+
+Property/Element - input(Read only)
+Description - The original string against which the regular expression was matched.
+Example - "cdbBdbsbz"
+
+Property/Element - index(Read only)
+Description - The zero-based index of the match in the string.
+Example - 1
+
+Property/Element - [0](Read only)
+Description - The last matched characters.
+Example - "dbBd"
+
+Property/Element - [1], ...[n](Read only)
+Description - Elements that specify the parenthesized substring matches (if included) in the regular expression. The number 
+              of possible parenthesized substrings is unlimited.
+Example - [1]: "bB"
+          [2]: "d"
+
+**Constructor
+
+  Array() - Creates a new 'Array' object.
+
+**Static properties
+
+  get Array[@@speceis]  - The constructor function is used to create derived objects.
+
+**Static methods
+
+  Array.from()  - Creates a new 'Array' instance from an array-like or iterable object.
+  Array.isArray() - Returns 'true' if the argument is an array, or 'false' otherwise.
+  Array.of()  - Creates a new 'Array' instance with a variable number of arguments, regardless of number or type of arguments.
+
+**Instance properties
+
+  Array.proptype.length - Reflects the number of elements in an array.
+  Array.prototype[@@unscopables]  - A symbol containing property names to exclude from a 'with' binding scope.
+
+**Instance methods
+
+  Array.prototype.at()  - Returns the array item at the given index. Accepts negative integers, which count back from the last item.
+  Array.prototype.concat()  - Returns a new array that is this array joined with other arrays(s) and/or value(s)
+  Array.prototype.copyWithin()  - Copies a sequence of array elements within the array.
+  Array.prototype.entries() - Returns a new array iterator object that contains the key/value pairs for each index in the array. (Consider length.js)
+  Array.prototype.every(testFunction) - Returns 'true' if every element in this array satisfies the testing function.
+  Array.prototype.fill(staticValue, rangeBegin, rangeEnd)  - Fills all elements of an array from a start index to an end index with a static value.
+  Array.propotype.filter(filteringFunction)  - Returns a new array containing all elements of the calling array for which the provided filtering function returns 'true'
+  Array.prototype.find()  - Returns the found 'element' in the array, if some element in the array satisfies the testing function, or undefined if not found.
