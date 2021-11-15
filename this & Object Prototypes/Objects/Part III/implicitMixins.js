@@ -2,10 +2,11 @@ var Something = {
   cool: function()
   {
     this.greeting = "Hello World!",
-    this.count = this.count ? this.count++ : this.count = 1 
+    this.count = this.count ? this.count + 1 : 1 
   }
 }
 
+Something.cool();
 Something.cool();
 console.log(Something.greeting);
 console.log(Something.count);

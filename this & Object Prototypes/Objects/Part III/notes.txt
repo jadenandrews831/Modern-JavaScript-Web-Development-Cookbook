@@ -150,3 +150,7 @@ and instead return our own 'car' object, the initially reated object is just dis
 **Implicit Mixins
 Implicit mixins are closely related to explicit pseudopoymorphism, as explained previously. As such, they come 
 with the same caveats and warnings: Consider (implicitMixin.js)
+With 'Someting.cool.call( this ), which can happen either in a cocnstructor call (most common) or in a method
+call, we borrow the function 'Something.cool()' and call it in the context of 'Another' instead of 'Something'.
+The end result is that the assignments that 'Something.cool()' makes are applied against the 'Another' object.
+
