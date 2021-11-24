@@ -1,0 +1,57 @@
+Objects in JavaScripts have an internal property, denoted in the specification as [[Prototype]], which is simply a reference
+to another object. Almost all objects are given a non-null value for this property, at the time of their creation.
+
+Consider: 
+
+    var myObject = {
+      a: 2
+    }
+
+    myObject.a;   //  2
+
+**NOTE**
+ES6 proxies are outside of our discussion scope in this book, but everything we discuss here about normal [[Get]] and
+[[Put]] behavior does not apply if a Proxy is involved
+
+If a given object (myObject) doesn't have a requested property (a), the default [[Get]] operation proceeds to follow 
+the [[Prototype]] link of the object. Consider:
+
+    var anotherobject = {
+      a: 2
+    }
+
+    var myObject = Object.create( anotherObject );
+    myObject.a // 2
+
+**NOTE**
+It will be explained later what 'Object.create(..)' does, and how it operates. 
+
+If you use the 'in' operator to test for the existence of a property on an object, 'in' will check the entire chain of 
+the object (regardless of enumerability). So, the [[Prototype]] chain is consulted, on link at a time, when you perform 
+property lookups in various fashions. The lookup stops once the property is found or the chain ends.
+
+**Object.prototype
+
+The top of every normal [[Prototype]] chain is the built-in 'Object.prototype'. This object includes a variety of common
+utilities used all over JS, because all normal objects in javaSCripts "descend from" the 'Object.prototype' object.
+
+**Setting and Shadowing Properties 
+
+Shadowing occurs when a property name occurs twice in the [[Prototype]] chain. The property lower on the chain 'shadows'
+the property higher up on the chain.
+
+Be sure to be aware of shawoding. Because of it's unusual nature in JS, it is discouraged. Consider(impShadowing.js):
+If you want to increment anotherObject.a, the only way to do it is to call anotherObject.a++. Calling myObject.a++
+uses the [[Get]] operation to find a matching property along the [[Prototype]] chain, then assigns myObject.a the value of
+the incremented property
+
+*Class
+In JavaScript, there are no abstract patterns/blueprints for objects called classes that are in class-oriented languages. 
+JavaScript just has objects. In JavaScript, classes can't describe what an object can do. The object defines its own behavior 
+directly.
+
+**"Class" Functions
+
+All functions by default get a public, nonenumerable property on them called 'prototype', which points at an otherwise 
+arbitrary object. This object is often called 'FOO's prototype', because we access it via a names 'Foo.prototype' property
+reference
